@@ -17,7 +17,7 @@ def scrape_all():
     news_title, news_paragraph = mars_news(browser)
 
     # Poplate the dictionary with all scraping data
-    data = {
+    mars_data = {
         "news_title": news_title,
         "news_paragraph": news_paragraph,
         "featured_image": featured_image(browser),
@@ -25,10 +25,14 @@ def scrape_all():
         "last_modified": dt.datetime.now()
     }
 
+    data_dict = {"mars" : mars_data,
+                 "mars_hemisphere" : mars_hemispheres(browser)
+                }
+
     # Close the browser
     browser.quit()
 
-    return data
+    return data_dict
 
 def mars_news(browser):
 
@@ -73,7 +77,7 @@ def featured_image(browser):
 
     # Find the more info button and click that
     browser.is_element_present_by_text('more info', wait_time=1)
-    more_info_elem = browser.find_link_by_partial_text('more info')
+    more_info_elem = browser.links.find_by_partial_text('more info')
     more_info_elem.click()
 
 
@@ -109,20 +113,28 @@ def mars_facts():
     
     return df.to_html()
 
-def mars_hemispheres(browser, title):
+def mars_hemispheres(browser):
 
     # Mars’ hemispheres webpage
     url = 'https://astrogeology.usgs.gov/search/results?q=hemisphere+enhanced&k1=target&v1=Mars'
-    browser.visit(url)
 
-    element = browser.links.find_by_partial_text(title)
-    element.click()
+    image_title_list = ["Cerberus Hemisphere Enhanced", "Schiaparelli Hemisphere Enhanced", "Syrtis Major Hemisphere Enhanced", "Valles Marineris Hemisphere Enhanced"]
 
-    html = browser.html
-    parser = BeautifulSoup(html, 'html.parser')
-    img_url = parser.select_one("div.downloads ul li a").get("href")
+    image_data_dict = []
 
-    return title, img_url
+    for title in image_title_list:
+        browser.visit(url)
+
+        element = browser.links.find_by_partial_text(title)
+        element.click()
+
+        html = browser.html
+        parser = BeautifulSoup(html, 'html.parser')
+        img_url = parser.select_one("div.downloads ul li a").get("href")
+
+        image_data_list.append({"title" : title, "img_url" : img_url})
+
+    return image_data_list
 
 if __name__ == "__main__":
     # If running as script, print scraped data
