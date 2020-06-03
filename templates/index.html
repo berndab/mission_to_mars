@@ -42,7 +42,7 @@
                     <h4>Mars Facts</h4>
  
                     <table class="table">
-                        <thead class="thead-dark">
+                        <thead>
                         <tr>
                             <th scope="col">Description</th>
                             <th scope="col">Value</th>
@@ -51,7 +51,7 @@
                         <tbody>
                             {% for mars_fact in mars.facts %}
                             <tr>
-                                <td>{{mars_fact["Description"]}}</td>
+                                <th scope="row">{{mars_fact["Description"]}}</th>
                                 <td>{{mars_fact["Value"]}}</td>
                             </tr>
                             {% endfor %}
@@ -62,13 +62,16 @@
             <div class="row" id="mars-hemisphere-images">
                 {%for mars_hemisphere_dict in mars.hemispheres%}
                 <div class="col-md-3">
-                    <h4>{{ mars_hemisphere_dict["title"] }}</h4>
-                    <!-- if images is False/None/non-existent, then default to error message -->
-                    <img 
-                         src="{{ mars_hemisphere_dict['img_url'] | default('static/images/error.png', true) }}" 
-                         class="img-responsive img-thumbnail"
-                         alt="Responsive image"
-                    />
+                    <div class="card-img-top" src="..." alt="Card image cap">
+                        <!-- if images is False/None/non-existent, then default to error message -->
+                        <img 
+                            src="{{ mars_hemisphere_dict['img_url'] | default('static/images/error.png', true) }}" 
+                            class="img-responsive img-thumbnail"
+                            alt="Responsive image"
+                        />
+                        <h5 class="card-title">{{ mars_hemisphere_dict["title"] }}</h5>
+                        <a href="{{ mars_hemisphere_dict['img_url'] | default('#', true) }}" class="btn btn-primary">See Full Image</a>
+                   </div>
                 </div>
                 {%endfor%}
             </div>
