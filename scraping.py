@@ -22,17 +22,14 @@ def scrape_all():
         "news_paragraph": news_paragraph,
         "featured_image": featured_image(browser),
         "facts": mars_facts(),
+        "hemispheres" : mars_hemispheres(browser),
         "last_modified": dt.datetime.now()
     }
-
-    data_dict = {"mars" : mars_data,
-                 "mars_hemisphere" : mars_hemispheres(browser)
-                }
 
     # Close the browser
     browser.quit()
 
-    return data_dict
+    return mars_data
 
 def mars_news(browser):
 
@@ -107,20 +104,18 @@ def mars_facts():
     except BaseException:
         return None
 
-    # Assign columns and set index of dataframe       
     df.columns=['Description', 'Value']
-    df.set_index('Description', inplace=True)
-    
-    return df.to_html()
+
+    return df.to_dict("records")
 
 def mars_hemispheres(browser):
 
     # Mars’ hemispheres webpage
     url = 'https://astrogeology.usgs.gov/search/results?q=hemisphere+enhanced&k1=target&v1=Mars'
 
-    image_title_list = ["Cerberus Hemisphere Enhanced", "Schiaparelli Hemisphere Enhanced", "Syrtis Major Hemisphere Enhanced", "Valles Marineris Hemisphere Enhanced"]
+    image_title_list = ["Cerberus Hemisphere", "Schiaparelli Hemisphere", "Syrtis Major Hemisphere", "Valles Marineris Hemisphere"]
 
-    image_data_dict = []
+    image_data_list = []
 
     for title in image_title_list:
         browser.visit(url)

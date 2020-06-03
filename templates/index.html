@@ -9,7 +9,7 @@
 </head>
 <body>
     <div class="container">
-        <div class="jumbotron text-center">
+        <div class="jumbotron text-left">
             <h1>Mission to Mars</h1>
             <p>
                 <a class="btn btn-primary btn-lg" href="/scrape" role="button">Scrape New Data</a>
@@ -19,9 +19,9 @@
                 <div class="col-md-12">
                     <div class="media">
                         <div class="media-body">
-                            <h2>Latest Mars News</h2>
-                            <h4 class="media-heading">{{mars_data["mars"].news_title}}</h4>
-                            <p>{{ mars_data["mars"].news_paragraph }}</p>
+                            <h2 class="media-heading">Latest Mars News</h2>
+                            <h3 class="media-heading">{{mars.news_title}}</h3>
+                            <p>{{ mars.news_paragraph }}</p>
                         </div>
                     </div>
                </div>            
@@ -32,54 +32,45 @@
                     <h2>Featured Mars Image</h2>
                     <!-- if images is False/None/non-existent, then default to error message -->
                     <img 
-                         src="{{ mars_data['mars'].featured_image | default('static/images/error.png', true) }}" 
+                         src="{{ mars.featured_image | default('static/images/error.png', true) }}" 
                          class="img-responsive"
-                         alt="Responsive image"
+                         alt="Featured Mars Image"
                     />
                 </div>
                 <!-- Mars Facts -->
                 <div class="col-md-4">
                     <h4>Mars Facts</h4>
-                    {{ mars_data["mars"].facts | safe }}   
+ 
+                    <table class="table">
+                        <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">Description</th>
+                            <th scope="col">Value</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            {% for mars_fact in mars.facts %}
+                            <tr>
+                                <td>{{mars_fact["Description"]}}</td>
+                                <td>{{mars_fact["Value"]}}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
                 </div>
             </div>
             <div class="row" id="mars-hemisphere-images">
+                {%for mars_hemisphere_dict in mars.hemispheres%}
                 <div class="col-md-3">
-                    <h2>{{ mars_data["mars_hemispheres"][0]["title"] }}</h2>
+                    <h4>{{ mars_hemisphere_dict["title"] }}</h4>
                     <!-- if images is False/None/non-existent, then default to error message -->
                     <img 
-                         src="{{ mars_data['mars_hemispheres'][0]['img_url'] | default('static/images/error.png', true) }}" 
-                         class="img-responsive"
+                         src="{{ mars_hemisphere_dict['img_url'] | default('static/images/error.png', true) }}" 
+                         class="img-responsive img-thumbnail"
                          alt="Responsive image"
                     />
                 </div>
-                <div class="col-md-3">
-                    <h2>{{ mars_data["mars_hemispheres"][1]["title"] }}</h2>
-                    <!-- if images is False/None/non-existent, then default to error message -->
-                    <img 
-                         src="{{ mars_data['mars_hemispheres'][0]['img_url'] | default('static/images/error.png', true) }}" 
-                         class="img-responsive"
-                         alt="Responsive image"
-                    />
-                </div>
-                <div class="col-md-3">
-                    <h2>{{ mars_data["mars_hemispheres"][2]["title"] }}</h2>
-                    <!-- if images is False/None/non-existent, then default to error message -->
-                    <img 
-                         src="{{ mars_data['mars_hemispheres'][0]['img_url'] | default('static/images/error.png', true) }}" 
-                         class="img-responsive"
-                         alt="Responsive image"
-                    />
-                </div>
-                <div class="col-md-3">
-                    <h2>{{ mars_data["mars_hemispheres"][3]["title"] }}</h2>
-                    <!-- if images is False/None/non-existent, then default to error message -->
-                    <img 
-                         src="{{ mars_data['mars_hemispheres'][0]['img_url'] | default('static/images/error.png', true) }}" 
-                         class="img-responsive"
-                         alt="Responsive image"
-                    />
-                </div>
+                {%endfor%}
             </div>
         </div>
     </div>
