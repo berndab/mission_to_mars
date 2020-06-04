@@ -17,11 +17,12 @@
             <!-- Mars News -->
             <div class="row" id="mars-news">
                 <div class="col-md-12">
+                    <h2>Latest Mars News</h2>
+                    <!-- ***** Added bootstrap media block ***** -->
                     <div class="media">
                         <div class="media-body">
-                            <h2 class="media-heading">Latest Mars News</h2>
-                            <h3 class="media-heading">{{mars.news_title}}</h3>
-                            <p>{{ mars.news_paragraph }}</p>
+                            <h3 class="mt-0">{{mars.news_title}}</h3>
+                            <p class="mb-0">{{ mars.news_paragraph }}</p>
                         </div>
                     </div>
                </div>            
@@ -40,7 +41,7 @@
                 <!-- Mars Facts -->
                 <div class="col-md-4">
                     <h4>Mars Facts</h4>
- 
+                    <!-- ***** Added bootstrap table ***** -->
                     <table class="table">
                         <thead>
                         <tr>
@@ -62,6 +63,7 @@
             <div class="row" id="mars-hemisphere-images">
                 {%for mars_hemisphere_dict in mars.hemispheres%}
                 <div class="col-md-3">
+                    <!-- ***** Added bootstrap card container ***** -->
                     <div class="card-img-top" src="..." alt="Card image cap">
                         <!-- if images is False/None/non-existent, then default to error message -->
                         <img 
@@ -70,6 +72,7 @@
                             alt="Responsive image"
                         />
                         <h5 class="card-title">{{ mars_hemisphere_dict["title"] }}</h5>
+                        <!-- ***** Added bootstrap button link to view full image ***** -->
                         <a href="{{ mars_hemisphere_dict['img_url'] | default('#', true) }}" class="btn btn-primary">See Full Image</a>
                    </div>
                 </div>
