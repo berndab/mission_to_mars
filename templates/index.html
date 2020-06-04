@@ -9,76 +9,83 @@
 </head>
 <body>
     <div class="container">
-        <div class="jumbotron text-left">
+        <div class="jumbotron text-center">
             <h1>Mission to Mars</h1>
             <p>
                 <a class="btn btn-primary btn-lg" href="/scrape" role="button">Scrape New Data</a>
             </p>
-            <!-- Mars News -->
-            <div class="row" id="mars-news">
-                <div class="col-md-12">
-                    <h2>Latest Mars News</h2>
-                    <!-- ***** Added bootstrap media block ***** -->
-                    <div class="media">
-                        <div class="media-body">
-                            <h3 class="mt-0">{{mars.news_title}}</h3>
+        </div>
+        <!-- Mars News Section -->
+        <div class="row" id="mars-news">
+            <div class="col-md-12">
+                <div class="media">
+                    <div class="media-body">
+                        <h2>Latest Mars News</h2>
+                        <h3 class="media-heading">{{mars.news_title}}</h3>
+                        <!-- ***** Added bootstrap block quote ***** -->
+                        <blockquote class="blockquote">
                             <p class="mb-0">{{ mars.news_paragraph }}</p>
-                        </div>
+                        </blockquote>
                     </div>
-               </div>            
-            </div>
-            <!-- Section for Featured Image and Facts table -->
-            <div class="row" id="mars-featured-image">
-                <div class="col-md-8">
-                    <h2>Featured Mars Image</h2>
-                    <!-- if images is False/None/non-existent, then default to error message -->
-                    <img 
-                         src="{{ mars.featured_image | default('static/images/error.png', true) }}" 
-                         class="img-responsive"
-                         alt="Featured Mars Image"
-                    />
                 </div>
-                <!-- Mars Facts -->
-                <div class="col-md-4">
-                    <h4>Mars Facts</h4>
-                    <!-- ***** Added bootstrap table ***** -->
-                    <table class="table">
-                        <thead>
+            </div>            
+        </div>
+        <!-- Mars Featured Image and Facts Table Section -->
+        <div class="row" id="mars-featured-image">
+            <!-- Mars Featured Image -->
+            <div class="col-md-8">
+                <h2>Featured Mars Image</h2>
+                <!-- if images is False/None/non-existent, then default to error message -->
+                <img 
+                        src="{{ mars.featured_image | default('static/images/error.png', true) }}" 
+                        class="img-responsive"
+                        alt="Featured Mars Image"
+                />
+            </div>
+            <!-- Mars Facts -->
+            <div class="col-md-4">
+                <h2>Mars Facts</h2>
+                <!-- ***** Added bootstrap table ***** -->
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">Description</th>
+                        <th scope="col">Value</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        {% for mars_fact in mars.facts %}
                         <tr>
-                            <th scope="col">Description</th>
-                            <th scope="col">Value</th>
+                            <th scope="row">{{mars_fact["Description"]}}</th>
+                            <td>{{mars_fact["Value"]}}</td>
                         </tr>
-                        </thead>
-                        <tbody>
-                            {% for mars_fact in mars.facts %}
-                            <tr>
-                                <th scope="row">{{mars_fact["Description"]}}</th>
-                                <td>{{mars_fact["Value"]}}</td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            <div class="row" id="mars-hemisphere-images">
-                {%for mars_hemisphere_dict in mars.hemispheres%}
-                <div class="col-md-3">
-                    <!-- ***** Added bootstrap card container ***** -->
-                    <div class="card-img-top" src="..." alt="Card image cap">
-                        <!-- if images is False/None/non-existent, then default to error message -->
-                        <img 
-                            src="{{ mars_hemisphere_dict['img_url'] | default('static/images/error.png', true) }}" 
-                            class="img-responsive img-thumbnail"
-                            alt="Responsive image"
-                        />
-                        <h5 class="card-title">{{ mars_hemisphere_dict["title"] }}</h5>
-                        <!-- ***** Added bootstrap button link to view full image ***** -->
-                        <a href="{{ mars_hemisphere_dict['img_url'] | default('#', true) }}" class="btn btn-primary">See Full Image</a>
-                   </div>
-                </div>
-                {%endfor%}
+                        {% endfor %}
+                    </tbody>
+                </table>
             </div>
         </div>
+        <!-- Mars Hemisphere Image Section -->
+        <div class="row" id="mars-hemisphere-images">
+            <!-- One Mars Hemisphere Image Section -->
+            {%for mars_hemisphere_dict in mars.hemispheres%}
+            <div class="col-md-3">
+                <!-- ***** Added bootstrap card container ***** -->
+                <div class="card-img-top" src="..." alt="Card image cap">
+                    <!-- if images is False/None/non-existent, then default to error message -->
+                    <img 
+                        src="{{ mars_hemisphere_dict['img_url'] | default('static/images/error.png', true) }}" 
+                        class="img-responsive img-thumbnail"
+                        alt="Responsive image"
+                    />
+                    <h5 class="card-title">{{ mars_hemisphere_dict["title"] }}</h5>
+                    <!-- ***** Added bootstrap button link to view full image ***** -->
+                    <a href="{{ mars_hemisphere_dict['img_url'] | default('#', true) }}" class="btn btn-primary">See Full Image</a>
+                </div>
+            </div>
+            {%endfor%}
+        </div>
     </div>
+    <br/> <!-- Adding space at the bottom of the page -->
+    <br/>
 </body>
 </html>
