@@ -37,8 +37,9 @@
                 <h2>Featured Mars Image</h2>
                 <!-- if images is False/None/non-existent, then default to error message -->
                 <img 
-                        src="{{ mars.featured_image | default('static/images/error.png', true) }}" 
+                        src="{{ mars.featured_image }}" 
                         class="img-responsive"
+                        title="Featured Mars Image"
                         alt="Featured Mars Image"
                 />
             </div>
@@ -64,26 +65,25 @@
                 </table>
             </div>
         </div>
+        <br/> <!-- Adding space between sections-->
+        <br/>
         <!-- Mars Hemisphere Image Section -->
         <div class="row" id="mars-hemisphere-images">
             <!-- One Mars Hemisphere Image Section -->
-            {%for mars_hemisphere_dict in mars.hemispheres%}
+            {%for mars_hemisphere_dict in mars.hemispheres %}
             <div class="col-md-3">
                 <!-- ***** Added bootstrap card container ***** -->
-                <div class="card-img-top" src="..." alt="Card image cap">
-                    <!-- if images is False/None/non-existent, then default to error message -->
-                    <img 
-                        src="{{ mars_hemisphere_dict['img_url'] | default('static/images/error.png', true) }}" 
-                        class="img-responsive img-thumbnail"
-                        alt="Responsive image"
-                    />
-                    <h5 class="card-title">{{ mars_hemisphere_dict["title"] }}</h5>
-                    <!-- ***** Added bootstrap button link to view full image ***** -->
-                    <a href="{{ mars_hemisphere_dict['img_url'] | default('#', true) }}" class="btn btn-primary">See Full Image</a>
-                </div>
-            </div>
+                <img  class="img-responsive img-thumbnail card-img-top" 
+                      src="{{ mars_hemisphere_dict['img_url'] }}" 
+                      title="{{ mars_hemisphere_dict['description'] }}"
+                      alt="{{ mars_hemisphere_dict['title'] }}"
+                />
+                <h5 class="card-title">{{ mars_hemisphere_dict["title"] }}</h5>
+             </div>
             {%endfor%}
         </div>
+        <!-- ***** Added bootstrap button link to view all hemisphere full images ***** -->
+        <a href="/mars_hemispheres" class="btn btn-primary">See Full Images of Mars' Hemispheres</a>
     </div>
     <br/> <!-- Adding space at the bottom of the page -->
     <br/>
