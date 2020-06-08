@@ -118,36 +118,42 @@ def mars_hemispheres(browser):
     # Mars' hemispheres webpage URL
     url = 'https://astrogeology.usgs.gov/search/results?q=hemisphere+enhanced&k1=target&v1=Mars'
 
-    # List of titles of the images to retrieve
-    image_title_list = ["Cerberus Hemisphere", "Schiaparelli Hemisphere", "Syrtis Major Hemisphere", "Valles Marineris Hemisphere"]
+    # Start on the hemisphere homepage
+    browser.visit(url)
 
-    # List to store image data
-    image_data_list = []
+    hemi_soup = BeautifulSoup(browser.html, 'html.parser')
 
-    for title in image_title_list:
+    image_hemi_URL_List = []
 
-        # Start on the hemisphere homepage
+    div_descript_list = hemi_soup.find_all("div", class_="description")
+
+    for div_description in div_descript_list:
+        image_hemi_URL_List.append("https://astrogeology.usgs.gov" + div_description.find("a")["href"])
+
+    image_hemi_data_list = []
+    
+    for url in image_hemi_URL_List:
+    
         browser.visit(url)
 
-        # Find link to full size hemisphere image
-        element = browser.links.find_by_partial_text(title)
-        element.click()
-
-        html = browser.html
-        img_soup = BeautifulSoup(html, 'html.parser')
+        img_soup = BeautifulSoup(browser.html, 'html.parser')
 
         try:
             
             # Get hemisphere full size image URL
             img_url = img_soup.select_one("div.downloads ul li a").get("href")
 
+            image_title = img_soup.select_one("div.content h2.title").text
+            
+            image_description = img_soup.select_one("div.content p").text
+
         except AttributeError:
             return None
 
         # Append the hemisphere image data dictionary to the list
-        image_data_list.append({"title" : title, "img_url" : img_url})
+        image_hemi_data_list.append({"title" : image_title, "description": image_description, "img_url" : img_url})
 
-    return image_data_list
+    return image_hemi_data_list
 
 
 if __name__ == "__main__":
