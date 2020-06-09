@@ -14,6 +14,8 @@ def index():
    # Get mars data dictionary from Mongo
    mars = mongo.db.mars.find_one()
 
+   print(mars)
+
    # Render the homepage with Mars data dictionary
    return render_template("index.html", mars=mars)
 
@@ -27,20 +29,20 @@ def scrape():
    mongo.db.mars.update({}, mars_data_dict, upsert=True)
    
    # Render the scraping results page
-   return render_template("scrape_results.html")
+   return render_template("index.html", mars=mars_data_dict)
 
-@app.route("/mars_hemispheres")
+@app.route("/hemispheres")
 def hemi_image():
 
    # Get mars data from Mongo
    mars = mongo.db.mars.find_one()
    
    # Get the mars hemisphere dictionary list
-   mars_hemispheres = mars["hemispheres"]
+   hemispheres = mars["hemispheres"]
 
    # Render the Mars hemisphere full image display page
    # with mars hemisphere dist list
-   return render_template("mars_hemispheres.html", mars_hemispheres=mars_hemispheres )
+   return render_template("hemispheres.html", hemispheres=hemispheres )
 
 
 if __name__ == "__main__":
