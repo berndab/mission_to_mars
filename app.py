@@ -28,7 +28,7 @@ def scrape():
    # Store Mars data in Mongo
    mongo.db.mars.update({}, mars_data_dict, upsert=True)
    
-   # Render the scraping results page
+   # Render the index template with the new scraped data
    return render_template("index.html", mars=mars_data_dict)
 
 @app.route("/hemispheres")
