@@ -83,7 +83,10 @@
             {%endfor%}
         </div>
         <!-- ***** Added bootstrap button link to view all hemisphere full images ***** -->
-        <a href="/mars_hemispheres" class="btn btn-primary">See Full Images of Mars' Hemispheres</a>
+        <!-- Disable button if there is no mars hemisphere data -->
+        <a  {% if mars is not none %} href="/hemispheres" {% endif %} class="btn btn-primary">
+            See Full Images of Mars' Hemispheres
+        </a>
     </div>
     <br/> <!-- Adding space at the bottom of the page -->
     <br/>
