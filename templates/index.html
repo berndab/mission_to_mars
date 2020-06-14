@@ -5,88 +5,112 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Mission To Mars</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link
+        rel="stylesheet"
+        href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+        crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="static/css/style.css">
 </head>
 <body>
+    <br/>
     <div class="container">
         <div class="jumbotron text-center">
             <h1>Mission to Mars</h1>
-            <p>
-                <a class="btn btn-primary btn-lg" href="/scrape" role="button">Update Mars Data</a>
-            </p>
         </div>
         <!-- Mars News Section -->
         <div class="row" id="mars-news">
             <div class="col-md-12">
-                <div class="media">
-                    <div class="media-body">
-                        <h2>Latest Mars News</h2>
-                        <h3 class="media-heading">{{mars.news_title}}</h3>
-                        <!-- ***** Added bootstrap block quote ***** -->
-                        <blockquote class="blockquote">
-                            <p class="mb-0">{{ mars.news_paragraph }}</p>
-                        </blockquote>
+                <div class="card">
+                    <h5 class="card-header mars-card-header ">Latest Mars News <a class="btn btn-dark btn-sm mars-update-button" href="/scrape" role="button">Update</a></h5>
+                    <div class="card-body mars-card-body">
+                        <h5 class="card-title">{{ mars.news_title }}</h5>
+                        <p class="card-text">{{ mars.news_paragraph }}</p>
                     </div>
                 </div>
+                <p></p>
             </div>            
         </div>
-        <!-- Mars Featured Image and Facts Table Section -->
+        <!-- Mars Featured Image and Facts Table Section --> 
         <div class="row" id="mars-featured-image">
             <!-- Mars Featured Image -->
-            <div class="col-md-8">
-                <h2>Featured Mars Image</h2>
-                <!-- if images is False/None/non-existent, then default to error message -->
-                <img 
-                        src="{{ mars.featured_image }}" 
-                        class="img-responsive"
-                        title="Featured Mars Image"
-                        alt="Featured Mars Image"
-                />
+            <div class="col-md-7">
+                <div class="card mars-featured-image-container">
+                    <h5 class="card-header mars-card-header">Featured Mars Image <a class="btn btn-dark btn-sm mars-update-button" href="/scrape" role="button">Update</a></h5>
+                    <div class="card-body mars-card-body mars-featured-image-container">
+                        <img 
+                            src="{{ mars.featured_image }}"
+                            class="img-responsive mars-featured-image-container"
+                            title="Featured Mars Image"
+                            alt="Featured Mars Image"
+                            id="featured-mars-image"
+                        />
+                    </div>
+                </div>
             </div>
             <!-- Mars Facts -->
-            <div class="col-md-4">
-                <h2>Mars Facts</h2>
-                <!-- ***** Added bootstrap table ***** -->
-                <table class="table">
-                    <thead>
-                    <tr>
-                        <th scope="col">Description</th>
-                        <th scope="col">Value</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                        {% for mars_fact in mars.facts %}
+            <div class="col-md-5">
+                <div class="card">
+                    <h5 class="card-header mars-card-header">Mars Facts</h5>
+                    <!-- ***** Added bootstrap table ***** -->
+                    <div class="card-body mars-card-body">
+                        <table class="table mars-table">
+                        <thead>
                         <tr>
-                            <th scope="row">{{mars_fact["Description"]}}</th>
-                            <td>{{mars_fact["Value"]}}</td>
+                            <th scope="col">Description</th>
+                            <th scope="col">Value</th>
                         </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            {% for mars_fact in mars.facts %}
+                            <tr>
+                                <th scope="row">{{mars_fact["Description"]}}</th>
+                                <td>{{mars_fact["Value"]}}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                        </table>
+                    </div>
+
+                </div>
             </div>
         </div>
         <br/> <!-- Adding space between sections-->
-        <br/>
+        <div class="row">
+            <div class="col-md-1">
+                <!-- ***** Added bootstrap button link to view all hemisphere full images ***** -->
+                <!-- Disable button if there is no mars hemisphere data -->
+                <a  {% if mars is not none and mars.hemispheres|length > 0 %} href="/hemispheres" {% endif %} class="btn btn-sm btn-dark">
+                    See Full Images of Mars' Hemispheres
+                </a>
+            </div>
+        </div>
+        <br/> <!-- Adding space between sections-->
         <!-- Mars Hemisphere Image Section -->
         <div class="row" id="mars-hemisphere-images">
             <!-- One Mars Hemisphere Image Section -->
+            {% if mars is not none and mars.hemispheres|length > 0 %}
             {%for mars_hemisphere_dict in mars.hemispheres %}
-            <div class="col-md-3">
+
+            <div class="col-md-3" id="hemisphere{{ index }}">
                 <!-- ***** Added bootstrap card container ***** -->
-                <img  class="img-responsive img-thumbnail card-img-top" 
-                      src="{{ mars_hemisphere_dict['img_url'] }}" 
-                      title="{{ mars_hemisphere_dict['description'] }}"
-                      alt="{{ mars_hemisphere_dict['title'] }}"
-                />
-                <h5 class="card-title">{{ mars_hemisphere_dict["title"] }}</h5>
-             </div>
+                <div class="card">
+                    <div class="card-header mars-card-header mars-hemi-header">
+                        {{ mars_hemisphere_dict["title"] }}
+                    </div>
+                    <div class="card-body mars-card-body">
+                        <img  class="img-responsive img-thumbnail card-img-top" 
+                            src="{{ mars_hemisphere_dict['img_url'] }}" 
+                            title="{{ mars_hemisphere_dict['description'] }}"
+                            alt="{{ mars_hemisphere_dict['title'] }}"
+                        />
+                    </div>
+                </div>
+            </div>
             {%endfor%}
+            {% endif %}
         </div>
-        <!-- ***** Added bootstrap button link to view all hemisphere full images ***** -->
-        <!-- Disable button if there is no mars hemisphere data -->
-        <a  {% if mars is not none %} href="/hemispheres" {% endif %} class="btn btn-primary">
-            See Full Images of Mars' Hemispheres
-        </a>
     </div>
     <br/> <!-- Adding space at the bottom of the page -->
     <br/>

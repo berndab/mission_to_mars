@@ -1,0 +1,42 @@
+
+body {
+    background: gainsboro;
+}
+
+.jumbotron {
+    background-image: url("../images/mars_collony.jpg");
+    background-size: 100% 100%;
+    color: white;
+    text-align: center;
+}
+
+.mars-featured-image-container {
+    height: 100%;
+    width: 100%;
+}
+
+.mars-update-button {
+    margin-left: 25px;
+}
+
+.mars-table {
+    font-size: small;
+    padding: 0ex;
+}
+
+.mars-card-header {
+    color: black;
+    background: linear-gradient(darkorange, orange);
+    )
+}
+
+.mars-card-body {
+    color: black;
+    background: whitesmoke
+}
+
+.mars-hemi-header {
+    font-weight: bold;
+    text-align: center;
+    height: 75px;
+}

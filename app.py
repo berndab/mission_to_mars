@@ -14,7 +14,8 @@ def index():
    # Get mars data dictionary from Mongo
    mars = mongo.db.mars.find_one()
 
-   print(mars)
+   if mars is None:
+      return scrape()
 
    # Render the homepage with Mars data dictionary
    return render_template("index.html", mars=mars)
