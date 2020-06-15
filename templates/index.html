@@ -25,22 +25,25 @@
                 <div class="card">
                     <h5 class="card-header mars-card-header ">Latest Mars News <a class="btn btn-dark btn-sm mars-update-button" href="/scrape" role="button">Update</a></h5>
                     <div class="card-body mars-card-body">
-                        <h5 class="card-title">{{ mars.news_title }}</h5>
-                        <p class="card-text">{{ mars.news_paragraph }}</p>
+                        <h5 class="card-title">{{ mars_data.news.title }}</h5>
+                        <p class="card-text">{{ mars_data.news.content }}</p>
+                        <p class="card-text">{{ mars_data.news.datetime }}</p>
                     </div>
                 </div>
                 <p></p>
             </div>            
         </div>
         <!-- Mars Featured Image and Facts Table Section --> 
-        <div class="row" id="mars-featured-image">
+        <div class="row">
             <!-- Mars Featured Image -->
             <div class="col-md-7">
                 <div class="card mars-featured-image-container">
                     <h5 class="card-header mars-card-header">Featured Mars Image <a class="btn btn-dark btn-sm mars-update-button" href="/scrape" role="button">Update</a></h5>
                     <div class="card-body mars-card-body mars-featured-image-container">
+                       <p>{{ mars_data.featured_image.text }}</p>
+                       <p id="mars-image-datetime">{{ mars_data.featured_image.datetime }}</p>
                         <img 
-                            src="{{ mars.featured_image }}"
+                            src="{{ mars_data.featured_image.img_url }}"
                             class="img-responsive mars-featured-image-container"
                             title="Featured Mars Image"
                             alt="Featured Mars Image"
@@ -63,7 +66,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                            {% for mars_fact in mars.facts %}
+                            {% for mars_fact in mars_data.facts %}
                             <tr>
                                 <th scope="row">{{mars_fact["Description"]}}</th>
                                 <td>{{mars_fact["Value"]}}</td>
@@ -81,7 +84,7 @@
             <div class="col-md-1">
                 <!-- ***** Added bootstrap button link to view all hemisphere full images ***** -->
                 <!-- Disable button if there is no mars hemisphere data -->
-                <a  {% if mars is not none and mars.hemispheres|length > 0 %} href="/hemispheres" {% endif %} class="btn btn-sm btn-dark">
+                <a  {% if mars_data is not none and mars_data.hemispheres|length > 0 %} href="/hemispheres" {% endif %} class="btn btn-sm btn-dark">
                     See Full Images of Mars' Hemispheres
                 </a>
             </div>
@@ -90,20 +93,20 @@
         <!-- Mars Hemisphere Image Section -->
         <div class="row" id="mars-hemisphere-images">
             <!-- One Mars Hemisphere Image Section -->
-            {% if mars is not none and mars.hemispheres|length > 0 %}
-            {%for mars_hemisphere_dict in mars.hemispheres %}
+            {% if mars_data is not none and mars_data.hemispheres|length > 0 %}
+            {%for mars_hemisphere in mars_data.hemispheres %}
 
             <div class="col-md-3" id="hemisphere{{ index }}">
                 <!-- ***** Added bootstrap card container ***** -->
                 <div class="card">
                     <div class="card-header mars-card-header mars-hemi-header">
-                        {{ mars_hemisphere_dict["title"] }}
+                        {{ mars_hemisphere.title }}
                     </div>
                     <div class="card-body mars-card-body">
                         <img  class="img-responsive img-thumbnail card-img-top" 
-                            src="{{ mars_hemisphere_dict['img_url'] }}" 
-                            title="{{ mars_hemisphere_dict['description'] }}"
-                            alt="{{ mars_hemisphere_dict['title'] }}"
+                            src="{{ mars_hemisphere.img_url }}" 
+                            title="{{ mars_hemisphere.description }}"
+                            alt="{{ mars_hemisphere.title }}"
                         />
                     </div>
                 </div>
