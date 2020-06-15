@@ -7,6 +7,7 @@
 * Add a [Bootstrap Table](https://getbootstrap.com/docs/4.0/content/tables/#examples) on the homepage to display the Mars fact data
 * Added a scraping results HTML page to display the results of the scraping request using a [Bootstrap Jumbotron](https://getbootstrap.com/docs/4.0/components/jumbotron/) instead of plain text. 
 * Added a [Bootstrap Button](https://getbootstrap.com/docs/4.0/components/buttons/#examples) using a HTML line on the scraping results HTML page that will return back to the homepage
+* Added a [Bootstrap Carousel](https://getbootstrap.com/docs/4.5/components/carousel/) to display the four Mars hemisphere images on the hemispheres.html page
 
 
 ## Homepage
