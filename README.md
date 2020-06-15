@@ -10,8 +10,8 @@
 
 
 ## Homepage
-<img src="https://github.com/berndab/mission_to_mars/blob/master/screenshots/homepage_screenshot.png" />
+<img src="https://github.com/berndab/mission_to_mars/blob/master/screenshots/homepage.jpg" />
 
-## Scraping Result Webpage
+## Hemispheres Webpage
 
-<img src="https://github.com/berndab/mission_to_mars/blob/master/screenshots/scraped_screenshot.png" />
+<img src="" />
