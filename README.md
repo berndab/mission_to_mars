@@ -14,4 +14,4 @@
 
 ## Hemispheres Webpage
 
-<img src="" />
+<img src="https://github.com/berndab/mission_to_mars/blob/master/screenshots/mars_hemisphere_pages.jpg" />
