@@ -37,18 +37,23 @@
         <div class="row">
             <!-- Mars Featured Image -->
             <div class="col-md-7">
-                <div class="card mars-featured-image-container">
+                <div class="card">
                     <h5 class="card-header mars-card-header">Featured Mars Image <a class="btn btn-dark btn-sm mars-update-button" href="/scrape" role="button">Update</a></h5>
-                    <div class="card-body mars-card-body mars-featured-image-container">
-                       <p>{{ mars_data.featured_image.text }}</p>
-                       <p id="mars-image-datetime">{{ mars_data.featured_image.datetime }}</p>
-                        <img 
-                            src="{{ mars_data.featured_image.img_url }}"
-                            class="img-responsive mars-featured-image-container"
-                            title="Featured Mars Image"
-                            alt="Featured Mars Image"
-                            id="featured-mars-image"
-                        />
+                    <div class="card-body mars-card-body">
+                        <p>
+                            {{ mars_data.featured_image.text }}
+                            <span id="mars-image-datetime">{{ mars_data.featured_image.datetime }}</span>
+                        </p>
+                        <div>
+                            <img 
+                                src="{{ mars_data.featured_image.img_url }}" height="325" width="590"
+                                class="img-responsive mars-featured-image"
+                                title="Featured Mars Image"
+                                alt="Featured Mars Image"
+                                id="featured-mars-image"
+                                stype=""
+                            />
+                        </div>
                     </div>
                 </div>
             </div>
