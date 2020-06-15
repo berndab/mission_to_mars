@@ -1,30 +1,19 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-
 # Import Splinter and BeautifulSoup
 from splinter import Browser
 from bs4 import BeautifulSoup
 import pandas as pd
 import datetime as dt
 
-
 def scrape_all():
-
     # Initiate browser with headless driver for deployment
     browser = Browser("chrome", executable_path="chromedriver", headless=True)
 
-    # Get current new title and new paragraph
-    news_title, news_paragraph = mars_news(browser)
-
     # Poplate the dictionary with all scraping data
     mars_data = {
-        "news_title": news_title,
-        "news_paragraph": news_paragraph,
-        "featured_image": featured_image(browser),
-        "facts": mars_facts(),
-        "hemispheres" : mars_hemispheres(browser),
-        "last_modified": dt.datetime.now()
+        "news"          : get_mars_news(False, browser),
+        "featured_image": get_mars_featured_image(False, browser),
+        "facts"         : get_mars_facts(),
+        "hemispheres"   : get_mars_hemispheres(browser),
     }
 
     # Close the browser
@@ -32,7 +21,23 @@ def scrape_all():
 
     return mars_data
 
-def mars_news(browser):
+# Once mars facts and mars hemisphere data has been retrieved that information 
+# DOES NOT change and does not need to be scrapped.  Because of this, this function 
+# has been updates to enable functionality to get the mars news data in a standalone 
+# request. The mars news data DOES change and must be re-scrapped periodically. 
+# 
+# However it is more efficient to re-scrape mars news data individually 
+# without calling scrape_all() since the function unnecessarily re-scrapes mar facts 
+# and mars hemisphere data that has already been stored in mongo and does not change. 
+#
+# Future enhancement: Updating app.py to just create an endpoint that re-scrapes for 
+# updated mars news idividually.
+def get_mars_news(news_only, browser):
+
+    # If news_only is true than the request 
+    # is for updated mars news only
+    if news_only == True:
+        browser = Browser("chrome", executable_path="chromedriver", headless=True)
 
     # Mars' NASA newsite webpage URL
     url = 'https://mars.nasa.gov/news/'
@@ -54,15 +59,45 @@ def mars_news(browser):
         news_title = slide_elem.find("div", class_='content_title').get_text()
 
         # Use the parent element to find the paragraph text
-        news_p = slide_elem.find('div', class_="article_teaser_body").get_text()
+        news_content = slide_elem.find('div', class_="article_teaser_body").get_text()
     
     except AttributeError:
+
         return None, None
+
+    finally:
     
-    return news_title, news_p
+        # If new_only is True then the request 
+        # is for updated mars news only.
+        # The function created the browser
+        # and must close the browser
+        if news_only == True:
+            browser.quit()
+
+    return {
+        "title"   : news_title, 
+        "content" : news_content,
+        "datetime": dt.datetime.now()
+    }
+
+# Once mars facts and mars hemisphere data has been retrieved that information 
+# DOES NOT change and does not need to be scrapped.  Because of this, this function 
+# has been updates to enable functionality to get the mars image data in a standalone 
+# request. The mars featured image DOES change and must be re-scrapped periodically. 
+# 
+# However it is more efficient to re-scrape the featured image data individually 
+# without calling scrape_all() since the function unnecessarily re-scrapes mar facts 
+# and mars hemisphere data that has already been stored in mongo and does not change. 
+#
+# Future enhancement: Updating app.py to just create an endpoint that re-scrapes for 
+# updated mars featured image idividually.
+def get_mars_featured_image(img_only, browser):
 
 
-def featured_image(browser):
+    # If image_only is True then the request 
+    # is for an updated mars featured image only
+    if img_only == True:
+        browser = Browser("chrome", executable_path="chromedriver", headless=True)
 
     # Mars' featured image webpage URL
     url = 'https://www.jpl.nasa.gov/spaceimages/?search=&category=Mars'
@@ -86,18 +121,29 @@ def featured_image(browser):
     try:
 
         # Find the relative image url
-        img_url_rel = img_soup.select_one('figure.lede a img').get("src")
+        img = img_soup.select_one('figure.lede a img')
+        img_url_rel = img.get("src")
+        img_text    = img.get("title")
 
     except AttributeError:
         return None
 
-    # Use the base URL to create an absolute URL
-    img_url = f'https://www.jpl.nasa.gov{img_url_rel}'
+    finally:
+    
+        # If new_only is True then the request 
+        # is for updated mars news only.
+        # The function created the browser
+        # and must close the browser
+        if img_only == True:
+            browser.quit()
+   
+    return {
+        "img_url"   : f'https://www.jpl.nasa.gov{img_url_rel}',
+        "text"      : img_text,
+        "datetime"  : dt.datetime.now()
+    }
 
-    return img_url
-
-
-def mars_facts():
+def get_mars_facts():
     
     try:
         # Read the Mars data html table into a DataFrame
@@ -113,7 +159,7 @@ def mars_facts():
     # of dictionaries with one fact per row
     return df.to_dict("records")
 
-def mars_hemispheres(browser):
+def get_mars_hemispheres(browser):
 
     # Mars' hemispheres webpage URL
     url = 'https://astrogeology.usgs.gov/search/results?q=hemisphere+enhanced&k1=target&v1=Mars'
