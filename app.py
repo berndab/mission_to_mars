@@ -12,13 +12,13 @@ mongo = PyMongo(app)
 def index():
 
    # Get mars data dictionary from Mongo
-   mars = mongo.db.mars.find_one()
+   mars_data_dict = mongo.db.mars.find_one()
 
-   if mars is None:
+   if mars_data_dict is None:
       return scrape()
 
    # Render the homepage with Mars data dictionary
-   return render_template("index.html", mars=mars)
+   return render_template("index.html", mars_data=mars_data_dict)
 
 @app.route("/scrape")
 def scrape():
@@ -30,7 +30,7 @@ def scrape():
    mongo.db.mars.update({}, mars_data_dict, upsert=True)
    
    # Render the index template with the new scraped data
-   return render_template("index.html", mars=mars_data_dict)
+   return render_template("index.html", mars_data=mars_data_dict)
 
 @app.route("/hemispheres")
 def hemi_image():
